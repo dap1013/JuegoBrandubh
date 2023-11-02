@@ -14,10 +14,23 @@ public record Jugada(Celda origen, Celda destino) {
 
 	
 	public Sentido consultarSentido() {
+		if(esMovimientoHorizontalOVertical()) {
+			if(origen.coordenada.fila() == destino.coordenada.fila()) {
+				
+			}else if(origen.coordenada.columna() == destino.coordenada.columna()) {
+				
+			}
+		}
 		
+		return null;
 	}
 	
 	public boolean esMovimientoHorizontalOVertical() {
+		
+		if(origen.coordenada.fila() == destino.coordenada.fila() ||
+				origen.coordenada.columna() == destino.coordenada.columna()) {
+			return true;
+		}
 		
 		return false;
 	}
