@@ -52,7 +52,21 @@ public class Celda {
 	 * @return clon de la celda
 	 */
 	public Celda clonar() {
-		Celda nueva = new Celda(new Coordenada(coordenada.fila(), coordenada.columna()), tipoCelda);
+		TipoCelda nuevoTipoCelda;
+		if(this.tipoCelda.compareTo(TipoCelda.NORMAL) == 0) {
+			nuevoTipoCelda = TipoCelda.NORMAL;
+		}else if(this.tipoCelda.compareTo(TipoCelda.PROVINCIA) == 0) {
+			nuevoTipoCelda = TipoCelda.PROVINCIA;
+		}else {
+			nuevoTipoCelda = TipoCelda.TRONO;
+		}
+		
+		Celda nueva = new Celda(new Coordenada(coordenada.fila(), coordenada.columna()), nuevoTipoCelda);
+		if(pieza != null) {
+			Pieza nuevaPieza = new Pieza(this.pieza.tipoPieza);
+			nueva.pieza = nuevaPieza;
+		}
+		
 		return nueva;
 	}
 	
