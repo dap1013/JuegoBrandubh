@@ -3,7 +3,7 @@ package brandubh.modelo;
 import brandubh.util.Sentido;
 
 /**
- * The  Jugada.
+ * Describe una jugada.
  * 
  * @author Diego Arbeloa
  * @author Victor Vidal
@@ -13,6 +13,11 @@ import brandubh.util.Sentido;
 public record Jugada(Celda origen, Celda destino) {
 
 	
+	/**
+	 * Consultar sentido.
+	 *
+	 * @return Sentido de la jugada
+	 */
 	public Sentido consultarSentido() {
 		if(esMovimientoHorizontalOVertical()) {
 			if(origen.coordenada.fila() == destino.coordenada.fila()) { //movimiento horizontal
@@ -33,6 +38,11 @@ public record Jugada(Celda origen, Celda destino) {
 		return null;
 	}
 	
+	/**
+	 * Es movimiento horizontal O vertical.
+	 *
+	 * @return true, si es movimiento horizontal o vertical
+	 */
 	public boolean esMovimientoHorizontalOVertical() {
 		
 		if(origen.coordenada.fila() == destino.coordenada.fila() ||
