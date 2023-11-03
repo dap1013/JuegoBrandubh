@@ -14,43 +14,23 @@ import brandubh.util.TipoCelda;
 
 public class Tablero {
 
-/*Se crea el método tablero*/
-public Tablero aTexto() {
-	return null;}
+	/** La pieza. */
+	public Pieza pieza;
+
+	private Celda[][] matriz;
 	
-
-/** La coordenada. */
-public Coordenada coordenada;
-
-/** La pieza. */
-public Pieza pieza;
-
-
-/**
- * Instancia una nueva celda.
- *
- * @param coordenada de la celda
- */
-public Tablero(Coordenada coordenada) {
-	this.coordenada = coordenada;}
-
-/**
- * Instancia una nueva celda.
- *
- * @param coordenada de la celda
- * @param tipoCelda tipo de la celda
- */
-public  Celda consultarCelda (Coordenada coordenada) {
-	this.coordenada = coordenada;
-	 
-}
-/*Crea un clon en profundidad del tablero actual
- * 
- * 
- * @return del tablero
- */
-
-public Tablero clonar() {}
-
-
+	/** */
+	public Tablero(int filas, int columnas) {
+	matriz = new Celda[7][7];
+	for(int i = 0; i<matriz.length; i++) {
+		for(int j = 0; j<matriz[i].length; j++ ) {
+		Coordenada coordenada = new Coordenada (i, j);
+		Celda celda = new Celda(coordenada,TipoCelda.NORMAL);
+		matriz [i][j] = celda;
+		}
+	/*Usar el de Celda de la línea 44*/
+	matriz = new Celda[0][0];
+	}
+	
+	}
 }
