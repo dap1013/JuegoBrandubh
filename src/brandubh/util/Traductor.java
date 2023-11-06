@@ -1,5 +1,7 @@
 package brandubh.util;
 
+import brandubh.modelo.Tablero;
+
 /**
  * Clase para traducir las coordenadas.
  * 
@@ -9,14 +11,7 @@ package brandubh.util;
  * @since 1.0
  */
 public class Traductor {
-	
-	/** Contiene las filas maximas del tablero. */
-	private final static int filasMax = 7;
-	
-	/** Contiene las columnas maxima del tablero. */
-	private final static int columnasMax = 7;
-	
-	
+		
 	/**
 	 * Consultar coordenada para notacion algebraica.
 	 *
@@ -25,7 +20,7 @@ public class Traductor {
 	 */
 	public static Coordenada consultarCoordenadaParaNotacionAlgebraica(String texto) {
 		if(esTextoCorrectoParaCoordenada(texto)) {
-			Coordenada coordenada = new Coordenada(filasMax - Integer.parseInt(String.valueOf(texto.toLowerCase().charAt(1))), ((int) texto.toLowerCase().charAt(0) - 97));
+			Coordenada coordenada = new Coordenada(Tablero.filas - Integer.parseInt(String.valueOf(texto.toLowerCase().charAt(1))), ((int) texto.toLowerCase().charAt(0) - 97));
 			return coordenada;
 		}
 		return null;
@@ -38,8 +33,8 @@ public class Traductor {
 	 * @return coordenada en tipo texto
 	 */
 	public static String consultarTextoEnNotacionAlgebraica(Coordenada coordenada) {
-		if(coordenada.fila() >= 0 && coordenada.fila() < filasMax && coordenada.columna() >= 0 && coordenada.columna() < columnasMax) {
-			return String.valueOf((char)(coordenada.columna() + 97)) + String.valueOf((filasMax - coordenada.fila()));
+		if(coordenada.fila() >= 0 && coordenada.fila() < Tablero.filas && coordenada.columna() >= 0 && coordenada.columna() < Tablero.columnas) {
+			return String.valueOf((char)(coordenada.columna() + 97)) + String.valueOf((Tablero.filas - coordenada.fila()));
 		}
 		return null;
 	}
@@ -56,7 +51,7 @@ public class Traductor {
 				try {
 					char letra = texto.charAt(0);
 					int numero = Integer.parseInt(String.valueOf(texto.charAt(1)));
-					if(numero > 0 && numero <= filasMax && ((int)letra) >= 97 && ((int) letra) <= (97 + columnasMax)) {
+					if(numero > 0 && numero <= Tablero.filas && ((int)letra) >= 97 && ((int) letra) <= (97 + Tablero.columnas)) {
 						return true;
 					}
 				}catch(Exception e) {
