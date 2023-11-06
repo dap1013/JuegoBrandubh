@@ -25,7 +25,7 @@ public class Traductor {
 	 */
 	public static Coordenada consultarCoordenadaParaNotacionAlgebraica(String texto) {
 		if(esTextoCorrectoParaCoordenada(texto)) {
-			Coordenada coordenada = new Coordenada(filasMax - Integer.parseInt("" + texto.toLowerCase().charAt(1)), ((int) texto.toLowerCase().charAt(0) - 97));
+			Coordenada coordenada = new Coordenada(filasMax - Integer.parseInt(String.valueOf(texto.toLowerCase().charAt(1))), ((int) texto.toLowerCase().charAt(0) - 97));
 			return coordenada;
 		}
 		return null;
@@ -39,7 +39,7 @@ public class Traductor {
 	 */
 	public static String consultarTextoEnNotacionAlgebraica(Coordenada coordenada) {
 		if(coordenada.fila() >= 0 && coordenada.fila() < filasMax && coordenada.columna() >= 0 && coordenada.columna() < columnasMax) {
-			return "" + (char)(coordenada.columna() + 97) + (filasMax - coordenada.fila());
+			return String.valueOf((char)(coordenada.columna() + 97)) + String.valueOf((filasMax - coordenada.fila()));
 		}
 		return null;
 	}
@@ -55,7 +55,7 @@ public class Traductor {
 			if(texto.length() == 2) {
 				try {
 					char letra = texto.charAt(0);
-					int numero = Integer.parseInt("" + texto.charAt(1));
+					int numero = Integer.parseInt(String.valueOf(texto.charAt(1)));
 					if(numero > 0 && numero <= filasMax && ((int)letra) >= 97 && ((int) letra) <= (97 + columnasMax)) {
 						return true;
 					}

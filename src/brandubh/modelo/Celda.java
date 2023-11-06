@@ -20,7 +20,7 @@ public class Celda {
 	public Coordenada coordenada;
 	
 	/** El tipo de la celda. */
-	public TipoCelda tipoCelda;
+	private TipoCelda tipoCelda;
 	
 	/** La pieza. */
 	public Pieza pieza;
@@ -51,19 +51,10 @@ public class Celda {
 	 *
 	 * @return clon de la celda
 	 */
-	public Celda clonar() {
-		TipoCelda nuevoTipoCelda;
-		if(this.tipoCelda.compareTo(TipoCelda.NORMAL) == 0) {
-			nuevoTipoCelda = TipoCelda.NORMAL;
-		}else if(this.tipoCelda.compareTo(TipoCelda.PROVINCIA) == 0) {
-			nuevoTipoCelda = TipoCelda.PROVINCIA;
-		}else {
-			nuevoTipoCelda = TipoCelda.TRONO;
-		}
-		
-		Celda nueva = new Celda(new Coordenada(coordenada.fila(), coordenada.columna()), nuevoTipoCelda);
+	public Celda clonar() {		
+		Celda nueva = new Celda(new Coordenada(coordenada.fila(), coordenada.columna()), consultarTipoCelda());
 		if(pieza != null) {
-			Pieza nuevaPieza = new Pieza(this.pieza.tipoPieza);
+			Pieza nuevaPieza = new Pieza(this.pieza.consultarTipoPieza());
 			nueva.pieza = nuevaPieza;
 		}
 		

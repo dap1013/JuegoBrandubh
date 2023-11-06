@@ -33,10 +33,7 @@ public enum Color {
 	 * @return color contrario
 	 */
 	public Color consultarContrario() {
-		if(letra == 'B') {
-			return Color.NEGRO;
-		}
-		return Color.BLANCO;
+		return this == BLANCO ? NEGRO:BLANCO;
 	}
 	
 	/**
