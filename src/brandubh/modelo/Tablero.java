@@ -60,9 +60,22 @@ public class Tablero {
 	
 	public String aTexto() {
 		
+        String estadoTablero = "Estado del tablero actual: \n";
+        for (int i = 0; i<matriz.length; i++ ) {
+        	for (int j = 0; j<matriz[i].length; j++) {
+        		Celda celda = matriz [i][j];
+        		if (celda.estaVacia()) {
+        			estadoTablero = estadoTablero + '_';	
+        		} else {
+        			estadoTablero = estadoTablero + '\n';        		}
+        	}
+        	
+        }
+		return estadoTablero;
 	}
 	
 	public Tablero clonar() {
+		//crear un objeto y crear sus atributos coord tipocelda,tipo pieza
 		
 	}
 	
