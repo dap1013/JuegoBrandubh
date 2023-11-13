@@ -92,16 +92,20 @@ public class Tablero {
 	
 		//Se verifica si las coordenadas estan dentro del tablero
 		if(coordenada.equals(coordenada)  && pieza != null) {
-			
-			
+			matriz[filas][columnas].colocar(pieza);
 		}
 		
 	}
 	
 	public Celda consultarCelda(Coordenada coordenada) {
-		
+		if(coordenada.equals(coordenada))	{
+		return matriz[filas][columnas].clonar();
+		}else{
+			return null;
+		}
 	}
-	
+		
+		
 	public Celda[] consultarCeldas() {
 		return consultarCeldas();
 	}
