@@ -74,7 +74,6 @@ public class Tablero {
 	}
 	
 	public Tablero clonar() {
-		//crear un objeto y crear sus atributos coord tipocelda,tipo pieza
 		
 		Tablero TableroClonado = new Tablero();
 		
@@ -83,11 +82,15 @@ public class Tablero {
 				TableroClonado.matriz[i][j] = this.matriz[i][j].clonar();
 			}
 		}
+		return TableroClonado;}
 	
-		//vndghndfghn
-		
 		//Clase celda
-		//public celdaClonada()		
+		public Celda clonar() {
+		    Celda celdaClonada = new Celda(this.coordenada.clonar());
+		    if (!this.estaVacia()) {
+		        celdaClonada.colocar(this.pieza.clonar());
+		    }
+		    return celdaClonada;
 		
 		//Clase Pieza
 		//public Pieza clonar(); 
