@@ -103,7 +103,7 @@ public class Arbitro {
 	/**
 	 * Es movimiento legal.
 	 *
-	 * @param jugada a jugar 
+	 * @param jugada a jugar
 	 * @return true, si es legal
 	 */
 	public boolean esMovimientoLegal(Jugada jugada) {
