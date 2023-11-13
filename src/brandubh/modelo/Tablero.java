@@ -73,7 +73,7 @@ public class Tablero {
 		return estadoTablero;
 	}
 	
-	public Tablero clonar() {
+	public Tablero Clonar() {
 		
 		Tablero TableroClonado = new Tablero();
 		
@@ -82,22 +82,19 @@ public class Tablero {
 				TableroClonado.matriz[i][j] = this.matriz[i][j].clonar();
 			}
 		}
-		return TableroClonado;}
-	
-		//Clase celda
-		public Celda clonar() {
-		    Celda celdaClonada = new Celda(this.coordenada.clonar());
-		    if (!this.estaVacia()) {
-		        celdaClonada.colocar(this.pieza.clonar());
-		    }
-		    return celdaClonada;
-		
-		//Clase Pieza
-		//public Pieza clonar(); 
+		return TableroClonado;
 		
 	}
 	
+	//Poner las public coordenada,celda,tipopieza...
+		
 	public void colocar(Pieza pieza, Coordenada coordenada) {
+	
+		//Se verifica si las coordenadas estan dentro del tablero
+		if(coordenada.equals(coordenada)  && pieza != null) {
+			
+			
+		}
 		
 	}
 	
