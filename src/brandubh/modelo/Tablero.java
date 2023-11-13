@@ -37,7 +37,25 @@ public class Tablero {
 					matriz[i][j] = new Celda(new Coordenada(i, j));
 				}
 			}
-		}		
+		}
+		colocarPiezasInicio();
+		
+	}
+	private void colocarPiezasInicio() {
+		matriz[0][3].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[1][3].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[2][3].colocar(new Pieza(TipoPieza.DEFENSOR));
+		matriz[3][3].colocar(new Pieza(TipoPieza.REY));
+		matriz[4][3].colocar(new Pieza(TipoPieza.DEFENSOR));
+		matriz[5][3].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[6][3].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[3][0].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[3][1].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[3][2].colocar(new Pieza(TipoPieza.DEFENSOR));
+		matriz[3][4].colocar(new Pieza(TipoPieza.DEFENSOR));
+		matriz[3][5].colocar(new Pieza(TipoPieza.ATACANTE));
+		matriz[3][6].colocar(new Pieza(TipoPieza.ATACANTE));
+		
 	}
 	
 	public String aTexto() {
@@ -51,13 +69,28 @@ public class Tablero {
         		} else {
         			estadoTablero = estadoTablero + '\n';        		}
         	}
-        	
         }
 		return estadoTablero;
 	}
 	
 	public Tablero clonar() {
 		//crear un objeto y crear sus atributos coord tipocelda,tipo pieza
+		
+		Tablero TableroClonado = new Tablero();
+		
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				TableroClonado.matriz[i][j] = this.matriz[i][j].clonar();
+			}
+		}
+	
+		//vndghndfghn
+		
+		//Clase celda
+		//public celdaClonada()		
+		
+		//Clase Pieza
+		//public Pieza clonar(); 
 		
 	}
 	
@@ -70,7 +103,7 @@ public class Tablero {
 	}
 	
 	public Celda[] consultarCeldas() {
-		
+		return consultarCeldas();
 	}
 	
 	public Celda[] consultarCeldasContiguas(Coordenada coordenada) {
@@ -86,11 +119,11 @@ public class Tablero {
 	}
 	
 	public int consultarNumeroColumnas() {
-		
+		return matriz[0].length;
 	}
 	
 	public int consultarNumeroFilas() {
-		
+		return matriz.length;
 	}
 	
 	public int consultarNumeroPiezas(TipoPieza tipoPieza) {
