@@ -38,23 +38,6 @@ public class Tablero {
 				}
 			}
 		}
-		colocarPiezasInicio();
-		
-	}
-	private void colocarPiezasInicio() {
-		matriz[0][3].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[1][3].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[2][3].colocar(new Pieza(TipoPieza.DEFENSOR));
-		matriz[3][3].colocar(new Pieza(TipoPieza.REY));
-		matriz[4][3].colocar(new Pieza(TipoPieza.DEFENSOR));
-		matriz[5][3].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[6][3].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[3][0].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[3][1].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[3][2].colocar(new Pieza(TipoPieza.DEFENSOR));
-		matriz[3][4].colocar(new Pieza(TipoPieza.DEFENSOR));
-		matriz[3][5].colocar(new Pieza(TipoPieza.ATACANTE));
-		matriz[3][6].colocar(new Pieza(TipoPieza.ATACANTE));
 		
 	}
 	
@@ -90,19 +73,11 @@ public class Tablero {
 		
 	public void colocar(Pieza pieza, Coordenada coordenada) {
 	
-		//Se verifica si las coordenadas estan dentro del tablero
-		if(coordenada.equals(coordenada)  && pieza != null) {
-			matriz[filas][columnas].colocar(pieza);
-		}
-		
+		matriz[coordenada.fila()][coordenada.columna()].colocar(pieza);
 	}
 	
 	public Celda consultarCelda(Coordenada coordenada) {
-		if(coordenada.equals(coordenada))	{
-		return matriz[filas][columnas].clonar();
-		}else{
-			return null;
-		}
+		return matriz[coordenada.fila()][coordenada.columna()];
 	}
 		
 	public Celda[] consultarCeldas() {
@@ -122,11 +97,11 @@ public class Tablero {
 	}
 	
 	public int consultarNumeroColumnas() {
-		return matriz[0].length;
+		return columnas;
 	}
 	
 	public int consultarNumeroFilas() {
-		return matriz.length;
+		return filas;
 	}
 	
 	public int consultarNumeroPiezas(TipoPieza tipoPieza) {
