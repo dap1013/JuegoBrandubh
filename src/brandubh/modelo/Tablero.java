@@ -105,7 +105,6 @@ public class Tablero {
 		}
 	}
 		
-		
 	public Celda[] consultarCeldas() {
 		return consultarCeldas();
 	}
