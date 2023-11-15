@@ -40,13 +40,7 @@ public enum TipoPieza {
 	 * @return el color de la pieza
 	 */
 	public Color consultarColor() {
-		Color nuevo;
-		if(this.color.equals(Color.BLANCO)) {
-			nuevo = Color.BLANCO;
-		}else {
-			nuevo = Color.NEGRO;
-		}
-		return nuevo;
+		return color;
 	}
 	
 	/**

@@ -98,7 +98,7 @@ public class Celda {
 	 */
 	public Pieza consultarPieza() {
 		if(!estaVacia()) {
-			return pieza;
+			return new Pieza(pieza.tipoPieza);
 		}
 		return null;
 	}
