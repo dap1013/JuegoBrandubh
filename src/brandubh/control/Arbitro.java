@@ -107,7 +107,7 @@ public class Arbitro {
 	 */
 	public boolean esMovimientoLegal(Jugada jugada) {
 		if(jugada.esMovimientoHorizontalOVertical()) {
-			if(tablero.consultarCelda(jugada.destino().coordenada) == null ) {//comprobar si la celda de destino está vacía
+			if(tablero.consultarCelda(jugada.destino().coordenada).estaVacia() ) {//comprobar si la celda de destino está vacía
 				// comprobar que las coordenadas están dentro de los límites del tablero
 				if(jugada.origen().coordenada.columna() >= 0 && jugada.origen().coordenada.columna() < Tablero.columnas &&
 						jugada.origen().coordenada.fila() >= 0 && jugada.origen().coordenada.fila() < Tablero.filas &&
@@ -171,6 +171,22 @@ public class Arbitro {
 	 */
 	public boolean haGanadoAtacante() {
 		Coordenada coordenadaRey = encontrarPosicionRey();
+		
+		//Comprobar captura cuando el rey está en el trono
+		if(tablero.consultarCelda(coordenadaRey).consultarTipoCelda() == TipoCelda.TRONO) {
+			//comprobar si las celdas de arriba y abajo estan ocupadas por atacantes
+			if(tablero.consultarCelda(new Coordenada((coordenadaRey.fila() - 1), coordenadaRey.columna())).pieza.tipoPieza  == TipoPieza.ATACANTE 
+					&& tablero.consultarCelda(new Coordenada((coordenadaRey.fila() + 1), coordenadaRey.columna())).pieza.tipoPieza  == TipoPieza.ATACANTE) {
+				//comprobar ssi las celda de la derecha e izquierda están ocupadas por atacantes
+				if(tablero.consultarCelda(new Coordenada(coordenadaRey.fila(), (coordenadaRey.columna() - 1 ))).pieza.tipoPieza  == TipoPieza.ATACANTE
+						&& tablero.consultarCelda(new Coordenada(coordenadaRey.fila(), (coordenadaRey.columna() + 1 ))).pieza.tipoPieza  == TipoPieza.ATACANTE) {
+					return true;
+				}
+			}
+		}
+		
+		//Comprobar cuando el rey está colindante al trono
+		l
 		
 		return false;
 	}
