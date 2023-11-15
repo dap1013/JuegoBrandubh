@@ -7,7 +7,6 @@ import brandubh.modelo.Pieza;
 import brandubh.modelo.Tablero;
 import brandubh.util.Color;
 import brandubh.util.Coordenada;
-import brandubh.util.Sentido;
 import brandubh.util.TipoCelda;
 import brandubh.util.TipoPieza;
 import brandubh.util.Traductor;
@@ -115,13 +114,14 @@ public class Arbitro {
 						jugada.destino().coordenada.columna() >= 0 && jugada.destino().coordenada.columna() < Tablero.columnas &&
 						jugada.destino().coordenada.fila() >= 0 && jugada.destino().coordenada.fila() < Tablero.filas) { 
 					if(!hayPiezasEntreCeldas(jugada.origen(), jugada.destino())) { //comprobar si hay piezas entre la celda de destino y la de origen
-						TipoCelda tipoCelda = tablero.consultarCelda(jugada.destino().coordenada).consultarTipoCelda();
-						if(tipoCelda == TipoCelda.PROVINCIA || tipoCelda == TipoCelda.TRONO) {
-							if(tablero.consultarCelda(jugada.origen().coordenada).pieza.tipoPieza == TipoPieza.REY) {
+						//Comprobar si la pieza puede acceder a la celda de destino
+						TipoPieza tipoPieza = tablero.consultarCelda(jugada.origen().coordenada).pieza.tipoPieza;
+						if(tipoPieza != TipoPieza.REY) { 
+							TipoCelda tipoCelda = tablero.consultarCelda(jugada.destino().coordenada).consultarTipoCelda();
+							if(tipoCelda == TipoCelda.NORMAL) {
 								return true;
-							}else {
-								return false;
 							}
+							return false;
 						}
 						return true;
 					}
@@ -165,37 +165,42 @@ public class Arbitro {
 	}
 	
 	/**
-	 * Ha ganado atacante.
+	 * Ha ganado atacante, comprueba si el rey ha sido capturado.
 	 *
 	 * @return true, si han ganado los atacantes
 	 */
 	public boolean haGanadoAtacante() {
+		Coordenada coordenadaRey = encontrarPosicionRey();
 		
 		return false;
 	}
 	
+	private Coordenada encontrarPosicionRey() {
+		for(int i = 0; i < Tablero.filas; i++) {
+			for(int j = 0; j < Tablero.columnas; j++) {
+				Coordenada coordenada = new Coordenada(i, j);
+				if(tablero.consultarCelda(coordenada).pieza.tipoPieza == TipoPieza.REY) {
+					return coordenada;
+				}
+			}
+		}
+		return null;
+	}
+	
 	/**
-	 * Ha ganado rey.
+	 * Ha ganado rey, comprueba si el rey ha llegado a una casilla de tipo TipoCelda.PROVINCIA.
 	 *
 	 * @return true, si ha ganado el rey
 	 */
 	public boolean haGanadoRey() {
-		Celda[] celda00 = tablero.consultarCeldasContiguas(new Coordenada(0,0));
-		if(hayReyEnCeldas(celda00)) return true;
-		Celda[] celda06 = tablero.consultarCeldasContiguas(new Coordenada(0,6));
-		if(hayReyEnCeldas(celda06)) return true;
-		Celda[] celda60 = tablero.consultarCeldasContiguas(new Coordenada(6,0));
-		if(hayReyEnCeldas(celda60)) return true;
-		Celda[] celda66 = tablero.consultarCeldasContiguas(new Coordenada(6,6));
-		if(hayReyEnCeldas(celda66)) return true;
-		return false;
-	}
-	
-	private boolean hayReyEnCeldas(Celda[] celdas) {
-		for(int i = 0; i < celdas.length; i++) {
-			if(celdas[i].pieza.tipoPieza == TipoPieza.REY) {
-				return false;
-			}
+		if(!tablero.consultarCelda(new Coordenada(0,0)).estaVacia()) {
+			return true;
+		}else if(!tablero.consultarCelda(new Coordenada(0,6)).estaVacia()) {
+			return true;
+		}else if(!tablero.consultarCelda(new Coordenada(6,0)).estaVacia()) {
+			return true;
+		}else if(!tablero.consultarCelda(new Coordenada(6,6)).estaVacia()) {
+			return true;
 		}
 		return false;
 	}
