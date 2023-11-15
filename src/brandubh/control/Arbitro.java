@@ -23,6 +23,9 @@ public class Arbitro {
 	/** El turno. */
 	private Color turno;
 	
+	/** El último movimiento hecho. */
+	private String ultimoMovimiento;
+	
 	/**
 	 * Instancia un nuevo arbitro.
 	 *
@@ -106,7 +109,7 @@ public class Arbitro {
 	 * @return true, si es legal
 	 */
 	public boolean esMovimientoLegal(Jugada jugada) {
-		if(jugada.esMovimientoHorizontalOVertical()) {
+		if(jugada.esMovimientoHorizontalOVertical() && tablero.consultarCelda(jugada.origen().coordenada).pieza.color == turno) {
 			if(tablero.consultarCelda(jugada.destino().coordenada).estaVacia() ) {//comprobar si la celda de destino está vacía
 				// comprobar que las coordenadas están dentro de los límites del tablero
 				if(jugada.origen().coordenada.columna() >= 0 && jugada.origen().coordenada.columna() < Tablero.columnas &&
@@ -161,7 +164,6 @@ public class Arbitro {
 			return false;
 		}
 		
-		
 	}
 	
 	/**
@@ -172,22 +174,12 @@ public class Arbitro {
 	public boolean haGanadoAtacante() {
 		Coordenada coordenadaRey = encontrarPosicionRey();
 		
-		//Comprobar captura cuando el rey está en el trono
-		if(tablero.consultarCelda(coordenadaRey).consultarTipoCelda() == TipoCelda.TRONO) {
-			//comprobar si las celdas de arriba y abajo estan ocupadas por atacantes
-			if(tablero.consultarCelda(new Coordenada((coordenadaRey.fila() - 1), coordenadaRey.columna())).pieza.tipoPieza  == TipoPieza.ATACANTE 
-					&& tablero.consultarCelda(new Coordenada((coordenadaRey.fila() + 1), coordenadaRey.columna())).pieza.tipoPieza  == TipoPieza.ATACANTE) {
-				//comprobar ssi las celda de la derecha e izquierda están ocupadas por atacantes
-				if(tablero.consultarCelda(new Coordenada(coordenadaRey.fila(), (coordenadaRey.columna() - 1 ))).pieza.tipoPieza  == TipoPieza.ATACANTE
-						&& tablero.consultarCelda(new Coordenada(coordenadaRey.fila(), (coordenadaRey.columna() + 1 ))).pieza.tipoPieza  == TipoPieza.ATACANTE) {
-					return true;
-				}
-			}
-		}
+		if(reyCapturadoEnTrono(coordenadaRey)) return true;
 		
-		//Comprobar cuando el rey está colindante al trono
-		l
+		if(reyCapturadoColindanteTrono(coordenadaRey)) return true;
 		
+		if(reyCapturado(coordenadaRey)) return true;
+			
 		return false;
 	}
 	
@@ -201,6 +193,64 @@ public class Arbitro {
 			}
 		}
 		return null;
+	}
+	
+	private boolean reyCapturadoEnTrono(Coordenada coordenadaRey) {
+		//Comprobar captura cuando el rey está en el trono
+				if(tablero.consultarCelda(coordenadaRey).consultarTipoCelda() == TipoCelda.TRONO) {
+					//comprobar si las celdas de arriba y abajo estan ocupadas por atacantes
+					if(tablero.consultarCelda(new Coordenada((coordenadaRey.fila() - 1), coordenadaRey.columna())).pieza.tipoPieza  == TipoPieza.ATACANTE 
+							&& tablero.consultarCelda(new Coordenada((coordenadaRey.fila() + 1), coordenadaRey.columna())).pieza.tipoPieza  == TipoPieza.ATACANTE) {
+						//comprobar ssi las celda de la derecha e izquierda están ocupadas por atacantes
+						if(tablero.consultarCelda(new Coordenada(coordenadaRey.fila(), (coordenadaRey.columna() - 1 ))).pieza.tipoPieza  == TipoPieza.ATACANTE
+								&& tablero.consultarCelda(new Coordenada(coordenadaRey.fila(), (coordenadaRey.columna() + 1 ))).pieza.tipoPieza  == TipoPieza.ATACANTE) {
+							return true;
+						}
+					}
+				}
+				return false;
+	}
+	
+	private boolean reyCapturadoColindanteTrono(Coordenada coordenadaRey) {
+		//comprobar arriba, abajo, derecha e izquierda, si hay trono no cuenta la celda
+		int numPiezasAtacantesEntornoRey = 0;
+		
+		int[][] movimientos = {{0,1},{0,-1},{1,0},{-1,0} };
+		Celda celdaComprobar; 
+		
+		for(int i = 0; i < 4; i++) {
+			celdaComprobar = tablero.consultarCelda(new Coordenada((coordenadaRey.fila() + movimientos[i][0]) , (coordenadaRey.columna() + movimientos[i][1])));
+			if(celdaComprobar.consultarTipoCelda() != TipoCelda.TRONO) {
+				if(celdaComprobar.pieza.tipoPieza == TipoPieza.ATACANTE) {
+					numPiezasAtacantesEntornoRey++;
+				}
+			}
+		}
+		
+		if(numPiezasAtacantesEntornoRey >= 3) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean reyCapturado(Coordenada coordenadaRey) {
+		
+		//Comprobar capturado en vertical
+		
+		if(tablero.consultarCelda(new Coordenada((coordenadaRey.fila() + 1) , coordenadaRey.columna())).pieza.tipoPieza == TipoPieza.ATACANTE 
+				&& tablero.consultarCelda(new Coordenada((coordenadaRey.fila() - 1) , coordenadaRey.columna())).pieza.tipoPieza == TipoPieza.ATACANTE) {
+			return true;
+		}
+		
+		//Comprobar capturado en horizontal
+		
+		if(tablero.consultarCelda(new Coordenada(coordenadaRey.fila() , (coordenadaRey.columna() + 1 ))).pieza.tipoPieza == TipoPieza.ATACANTE 
+				&& tablero.consultarCelda(new Coordenada(coordenadaRey.fila() , (coordenadaRey.columna() - 1))).pieza.tipoPieza == TipoPieza.ATACANTE) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -231,7 +281,7 @@ public class Arbitro {
 		tablero.colocar(tablero.consultarCelda(jugada.origen().coordenada).pieza, jugada.destino().coordenada);
 		//eliminar la pieza del origen
 		tablero.eliminarPieza(jugada.origen().coordenada);
-		String ultimoMovimiento = Traductor.consultarTextoEnNotacionAlgebraica(jugada.origen().coordenada) + 
+		ultimoMovimiento = Traductor.consultarTextoEnNotacionAlgebraica(jugada.origen().coordenada) + 
 				Traductor.consultarTextoEnNotacionAlgebraica(jugada.destino().coordenada);
 	}
 	
@@ -239,6 +289,45 @@ public class Arbitro {
 	 * Realizar capturas tras mover.
 	 */
 	public void realizarCapturasTrasMover() {
+		//comprobar solo las piezas contrarias al turno
+		//ver si hay pieza en las celdas colindantes al ultimo movimiento en horizontal y vertical
+		//ver si hay pieza del mismo color que el turno en las celda colindantes en horizontal y vertical con dos celdas de distancia
+		Coordenada ultimoMovimientoCoord = Traductor.consultarCoordenadaParaNotacionAlgebraica(ultimoMovimiento.substring(2, 3));
 		
+		comprobarCapturaHorizontal(ultimoMovimientoCoord);
+		
+		comprobarCapturaVertical(ultimoMovimientoCoord);		
+		
+	}
+	
+	private void comprobarCapturaHorizontal(Coordenada coord) {
+		//Comprobar captura derecha
+		if(tablero.consultarCelda(new Coordenada(coord.fila(), (coord.columna() + 1))).pieza.color != turno) {//comprobar si la pieza colidante es de otro color
+			//comprobar si hay pieza del mismo color a dos celdas de distancia
+			if(tablero.consultarCelda(new Coordenada(coord.fila(), (coord.columna() + 2))).pieza.color == turno) {
+				tablero.consultarCelda(new Coordenada(coord.fila(), (coord.columna() + 1))).eliminarPieza();;
+			}
+		}
+		//Comprobar captura izquierda
+		if(tablero.consultarCelda(new Coordenada(coord.fila(), (coord.columna() - 1))).pieza.color != turno) {
+			if(tablero.consultarCelda(new Coordenada(coord.fila(), (coord.columna() - 2))).pieza.color == turno) {
+				tablero.consultarCelda(new Coordenada(coord.fila(), (coord.columna() - 1))).eliminarPieza();;
+			}
+		}
+	}
+	
+	private void comprobarCapturaVertical(Coordenada coord) {
+		//Comprobar captura hacia arriba
+				if(tablero.consultarCelda(new Coordenada((coord.fila() + 1), coord.columna())).pieza.color != turno) {
+					if(tablero.consultarCelda(new Coordenada((coord.fila() + 2), (coord.columna() + 2))).pieza.color == turno) {
+						tablero.consultarCelda(new Coordenada((coord.fila() + 1), coord.columna())).eliminarPieza();;
+					}
+				}
+				//Comprobar captura hacia abajo
+				if(tablero.consultarCelda(new Coordenada((coord.fila() + 1), coord.columna())).pieza.color != turno) {
+					if(tablero.consultarCelda(new Coordenada((coord.fila() + 2), (coord.columna() + 2))).pieza.color == turno) {
+						tablero.consultarCelda(new Coordenada((coord.fila() + 1), coord.columna())).eliminarPieza();;
+					}
+				}
 	}
 }
