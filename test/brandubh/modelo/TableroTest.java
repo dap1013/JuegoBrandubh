@@ -108,7 +108,7 @@ public class TableroTest {
 		void comprobarEstadoInicial() {
 			assertAll("estado inicial básico",
 					() -> assertThat("Número de filas incorrecto.", tablero.consultarNumeroFilas(), is(7)),
-					() -> assertThat("Número de columnas incorrecto.", tablero.consultarNumeroFilas(), is(7)));
+					() -> assertThat("Número de columnas incorrecto.", tablero.consultarNumeroColumnas(), is(7)));
 		}
 	}
 

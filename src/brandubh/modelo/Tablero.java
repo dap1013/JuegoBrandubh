@@ -44,19 +44,27 @@ public class Tablero {
 	public String aTexto() {
 		
         String estadoTablero = "Estado del tablero actual: \n";
-        for (int i = 0; i<matriz.length; i++ ) {
-        	for (int j = 0; j<matriz[i].length; j++) {
-        		Celda celda = matriz [i][j];
-        		if (celda.estaVacia()) {
-        			estadoTablero = estadoTablero + '_';	
+        for (int i = 0; i< filas; i++ ) {
+        	estadoTablero += String.valueOf(( filas - i));
+        	for (int j = 0; j< columnas; j++) {
+        		if (matriz[i][j].estaVacia()) {
+        			estadoTablero += " -";	
         		} else {
-        			estadoTablero = estadoTablero + '\n';        		}
+        			if(matriz[i][j].pieza.tipoPieza == TipoPieza.ATACANTE) {
+        				estadoTablero += " A";
+        			}else if(matriz[i][j].pieza.tipoPieza == TipoPieza.DEFENSOR) {
+        				estadoTablero += " D";
+        			}else {
+        				estadoTablero += " R";
+        			}
+        		}
         	}
         }
+        estadoTablero += "  a b c d e f g";
 		return estadoTablero;
 	}
 	
-	public Tablero Clonar() {
+	public Tablero clonar() {
 		
 		Tablero TableroClonado = new Tablero();
 		
@@ -69,7 +77,6 @@ public class Tablero {
 		
 	}
 	
-	//Poner las public coordenada,celda,tipopieza...
 		
 	public void colocar(Pieza pieza, Coordenada coordenada) {
 	
@@ -85,15 +92,30 @@ public class Tablero {
 	}
 	
 	public Celda[] consultarCeldasContiguas(Coordenada coordenada) {
-		
+		Celda[] celdasContiguas = new Celda[4];
+		Celda[] celdasContiguasHorizontal = consultarCeldasContiguasEnHorizontal(coordenada);
+		Celda[] celdasContiguasVertical = consultarCeldasContiguasEnVertical(coordenada);
+		System.arraycopy(celdasContiguasHorizontal, 0, celdasContiguas, 0, 2);
+		System.arraycopy(celdasContiguasVertical, 0, celdasContiguasVertical, 2, 2);
+		return celdasContiguas;
 	}
 	
 	public Celda[] consultarCeldasContiguasEnHorizontal(Coordenada coordenada) {
+		Celda[] celdasContiguas = new Celda[2];
 		
+		celdasContiguas[0] = matriz[coordenada.fila()][coordenada.columna() + 1].clonar();
+		celdasContiguas[1] = matriz[coordenada.fila()][coordenada.columna() - 1].clonar();
+		
+		return celdasContiguas;
 	}
 	
 	public Celda[] consultarCeldasContiguasEnVertical(Coordenada coordenada) {
+		Celda[] celdasContiguas = new Celda[2];
 		
+		celdasContiguas[0] = matriz[coordenada.fila() + 1][coordenada.columna()].clonar();
+		celdasContiguas[1] = matriz[coordenada.fila() - 1][coordenada.columna()].clonar();
+		
+		return celdasContiguas;
 	}
 	
 	public int consultarNumeroColumnas() {
@@ -105,14 +127,24 @@ public class Tablero {
 	}
 	
 	public int consultarNumeroPiezas(TipoPieza tipoPieza) {
-		
+		int numPiezas = 0;
+		for(int i = 0; i < filas; i++) {
+			for(int j = 0; j < columnas; j++) {
+				if(!matriz[i][j].estaVacia()) {
+					if(matriz[i][j].pieza.tipoPieza == tipoPieza) {
+						numPiezas++;
+					}
+				}
+			}
+		}
+		return numPiezas;
 	}
 	
 	public void eliminarPieza(Coordenada coordenada) {
-		
+		matriz[coordenada.fila()][coordenada.columna()].eliminarPieza();
 	}
 	public Celda obtenerCelda(Coordenada coordenada) {
-		
+		return matriz[coordenada.fila()][coordenada.columna()];
 	}
 	
 	//Falta por implementar toString(), hashCode() y equals(), generarlos cuando se termine la clase
